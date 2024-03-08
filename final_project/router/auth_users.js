@@ -62,12 +62,20 @@ regd_users.put("/auth/review/:isbn", (req, res) => {
     
     books[isbn] =filtered_book;
   }
-  res.send(`review for book with isbn ${isbn}`)
+  res.send(`The review for the book with isbn ${isbn} has been added/updated`)
   }else{
     res.send("unable to find this isbn")
   }
 }
 );
+regd_users.delete("/auth/review/:isbn",(req,res)=>{
+    const isbn =req.params.isbn;
+     let filtered_book = books[isbn];
+     let reviewer = req.session.authorization['username'];
+     delete filtered_book.reviews[reviewer]
+    
+    res.send(`Review for this ${isbn} posted by ${reviewer} deleted`)
+})
     
 
 module.exports.authenticated = regd_users;
